@@ -1,4 +1,5 @@
 import type { GetServerSideProps } from 'next';
+import { toUnicode } from 'punycode/';
 import { ComponentPropsWithoutRef } from 'react';
 
 import { getDestinationIfExists } from '../lib/db';
@@ -14,7 +15,10 @@ export const getServerSideProps: GetServerSideProps<
   const host = ctx.req.headers.host;
 
   // this is pretty naive, but who cares
-  const origin = host.split('.')[0];
+  const subdomain = host.split('.')[0];
+
+  // decode to unicode
+  const origin = toUnicode(subdomain);
 
   // if we have a valid destination, redirect
   const destination = await getDestinationIfExists(origin);
