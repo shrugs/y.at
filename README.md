@@ -1,2 +1,3 @@
-# y.at
-ý.at 🖕 // everybody owns emojis
+# ý.at
+
+[ý.at](https://ý.at) 🖕 // everybody owns emojis
