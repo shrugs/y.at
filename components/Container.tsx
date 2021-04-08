@@ -6,13 +6,15 @@ export function Container(delegated: BoxProps) {
       mx="auto"
       width="full"
       maxWidth="2xl"
-      minHeight="100vh"
+      height="100vh"
       display="flex"
       flexDirection="column"
       justifyContent="center"
       p={2}
     >
-      <Box as="main" p={4} color="yin" bg="yang" borderRadius="xl" {...delegated} />
+      <Box as="main" color="yin" bg="yang" borderRadius="xl" overflowX="hidden" overflowY="auto">
+        <Box p={4} {...delegated} />
+      </Box>
     </Box>
   );
 }

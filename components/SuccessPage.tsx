@@ -1,7 +1,8 @@
 import { Button } from '@chakra-ui/button';
 import { useClipboard } from '@chakra-ui/hooks';
-import { Box, Center, Link, Text, VStack } from '@chakra-ui/layout';
+import { Box, Center, HStack, Link, Text, VStack } from '@chakra-ui/layout';
 import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 
 import { useDrops } from '../lib/useDrops';
 import { toEmojiArray } from '../lib/validation';
@@ -16,19 +17,29 @@ export function SuccessPage({ origin, destination }: { origin: string; destinati
   const href = `https://${origin}.ý.at`;
   const { hasCopied, onCopy } = useClipboard(href);
 
+  const tweetHref = useMemo(
+    () =>
+      `https://twitter.com/intent/tweet?${new URLSearchParams({
+        text: `check out my ý.at here:\n`,
+        url: href,
+        hashtags: 'yat',
+      })}`,
+    [href],
+  );
+
   return (
     <VStack position="relative" spacing={8}>
       <Center py={16} pb={8} px={16} position="relative">
         <Text
           fontFamily="heading"
-          fontSize={{ base: '7xl', lg: '8xl', xl: '10xl' }}
+          fontSize={{ base: '8xl', lg: '10xl' }}
           textAlign="center"
           textTransform="uppercase"
           color="gray.500"
         >
-          Great
+          Why
           <br />
-          Choice
+          Not
         </Text>
         <Box
           position="absolute"
@@ -66,14 +77,20 @@ export function SuccessPage({ origin, destination }: { origin: string; destinati
         </Text>
       </VStack>
 
-      <Button onClick={onCopy}>{hasCopied ? `Copied!` : `Copy ${href}`}</Button>
+      <VStack align="stretch">
+        <Button as="a" href={tweetHref} rel="noopener noreferrer" target="_blank" variant="outline">
+          🐦 Tweet your ý.at
+        </Button>
 
-      <Text textAlign="center" fontSize="sm" color="gray.500">
-        or just visit{' '}
-        <Link href={href} isExternal>
-          {href}
-        </Link>
-      </Text>
+        <Button onClick={onCopy}>{hasCopied ? `Copied!` : `Copy ${href}`}</Button>
+
+        <Text textAlign="center" fontSize="sm" color="gray.500">
+          or just visit{' '}
+          <Link href={href} isExternal>
+            {href}
+          </Link>
+        </Text>
+      </VStack>
     </VStack>
   );
 }

@@ -75,13 +75,25 @@ function IndexPage({ initialOrigin }: { initialOrigin?: string }) {
                     value={origin ?? ''}
                     onChange={(e) => setOrigin(e.target.value || null)}
                     placeholder="🖕🖖"
-                    isInvalid={!isValidOrigin}
+                    isInvalid={origin && !originIsValid}
                   />
                   <FormHelperText
-                    color={origin && !isCheckingExistence ? (exists ? 'red' : 'green') : 'gray.500'}
+                    color={
+                      origin
+                        ? originIsValid
+                          ? isCheckingExistence
+                            ? `gray.500`
+                            : existenceError
+                            ? existenceError.message
+                            : exists
+                            ? `red`
+                            : `green`
+                          : `red`
+                        : `gray.500`
+                    }
                   >
                     {origin
-                      ? isValidOrigin
+                      ? originIsValid
                         ? isCheckingExistence
                           ? `Checking...`
                           : existenceError
@@ -89,8 +101,8 @@ function IndexPage({ initialOrigin }: { initialOrigin?: string }) {
                           : exists
                           ? `${origin} is already claimed`
                           : `${origin} is not yet claimed!`
-                        : `Yup, any emojis you want, we don't care.`
-                      : `Invalid origin`}
+                        : `This isn't a valid ý.at.`
+                      : `Yup, any emojis you want, we don't care.`}
                   </FormHelperText>
                 </FormControl>
 
@@ -101,9 +113,17 @@ function IndexPage({ initialOrigin }: { initialOrigin?: string }) {
                     value={destination ?? ''}
                     onChange={(e) => setDestination(e.target.value || null)}
                     placeholder="https://example.com"
-                    isInvalid={!isValidDestination}
+                    isInvalid={destination && !destinationIsValid}
                   />
-                  <FormHelperText>Yup, anywhere on the web, we don't care.</FormHelperText>
+                  <FormHelperText
+                    color={destination ? (destinationIsValid ? 'green' : 'red') : 'gray.500'}
+                  >
+                    {destination
+                      ? destinationIsValid
+                        ? 'Looks good to us!'
+                        : `This isn't a valid url.`
+                      : `Yup, anywhere on the web, we don't care.`}
+                  </FormHelperText>
                 </FormControl>
 
                 {error && <Alert status="error">{error.message}</Alert>}

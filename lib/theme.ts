@@ -17,7 +17,7 @@ const override: ThemeOverride = {
         fontFamily: 'body',
         color: 'yang',
         bg: 'yin',
-        overflowX: 'hidden',
+        overflow: 'hidden',
         lineHeight: 'normal',
       },
       '.particle': {
