@@ -1,7 +1,7 @@
 import emojiRegex from 'emoji-regex/RGI_Emoji';
 import isUrl from 'is-url';
 
-const regex = emojiRegex().compile();
+const regex = emojiRegex();
 
 export function isValidOrigin(text: string) {
   return text.match(regex).join('') === text;

@@ -1,10 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { doesOriginExist, setIfNotExists } from '../../lib/db';
+import { doesOriginExist, setIfNotExists, upsertIndex } from '../../lib/db';
 import { handler, nope, yup } from '../../lib/handler';
 import { isValidDestination, isValidOrigin } from '../../lib/validation';
 
 export default handler(async function claim(req: NextApiRequest, res: NextApiResponse) {
+  await upsertIndex();
+
   const origin = req.body.origin as string;
   const destination = req.body.destination as string;
 
@@ -17,7 +19,7 @@ export default handler(async function claim(req: NextApiRequest, res: NextApiRes
   try {
     await setIfNotExists(origin, destination);
   } catch (error) {
-    return nope(res, 500, `Unable to claim ${origin}.`);
+    return nope(res, 500, `Unable to claim ${origin}, it make have been taken right before you.`);
   }
 
   return yup(res, { origin, destination });
