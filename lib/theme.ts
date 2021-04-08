@@ -9,19 +9,34 @@ const override: ThemeOverride = {
   colors: {
     yin: '#000000',
     yang: '#FFFFFF',
+    darkglass: 'rgba(0,0,0,0.85)',
   },
   styles: {
     global: {
       body: {
         fontFamily: 'body',
-        color: 'yin',
-        bg: 'yang',
+        color: 'yang',
+        bg: 'yin',
         overflowX: 'hidden',
         lineHeight: 'normal',
       },
+      '.particle': {
+        pointerEvents: 'none',
+        position: 'absolute',
+        willChange: 'transform',
+      },
     },
   },
-  components: {},
+  components: {
+    Input: {
+      defaultProps: { size: 'lg' },
+    },
+    Link: {
+      baseStyle: {
+        textDecoration: 'underline',
+      },
+    },
+  },
 };
 
 export const theme = extendTheme(override);
