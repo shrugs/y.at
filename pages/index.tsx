@@ -2,7 +2,7 @@ import { Alert } from '@chakra-ui/alert';
 import { Button } from '@chakra-ui/button';
 import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control';
 import { Input } from '@chakra-ui/input';
-import { Heading, VStack } from '@chakra-ui/layout';
+import { Heading, Text, VStack } from '@chakra-ui/layout';
 import type { GetServerSideProps } from 'next';
 import { toUnicode } from 'punycode/';
 import { ComponentPropsWithoutRef, FormEventHandler, useCallback, useMemo, useState } from 'react';
@@ -63,9 +63,14 @@ function IndexPage({ initialOrigin }: { initialOrigin?: string }) {
           <SuccessPage {...data} />
         ) : (
           <>
-            <Heading textTransform="uppercase" fontSize="8xl" lineHeight="tall">
-              ý.at
-            </Heading>
+            <VStack align="stretch" my={4}>
+              <Heading textTransform="uppercase" fontSize="8xl" lineHeight="none">
+                ý.at
+              </Heading>
+              <Text color="gray.500" fontSize="lg">
+                everyone gets an emoji! 🎉
+              </Text>
+            </VStack>
             <form onSubmit={onSubmit}>
               <VStack align="stretch" spacing={4}>
                 <FormControl id="origin">
@@ -144,17 +149,20 @@ function IndexPage({ initialOrigin }: { initialOrigin?: string }) {
   );
 }
 
+const HOST = `ý.at`;
+
 export const getServerSideProps: GetServerSideProps<
   ComponentPropsWithoutRef<typeof IndexPage>
 > = async (ctx) => {
   // we can trust the host url on vercel
-  const host = ctx.req.headers.host;
+  const host = toUnicode(ctx.req.headers.host);
+
+  // bail early if we're definitely on the homepage
+  // also stops anyone from overwriting our own origin lmao
+  if (host === HOST) return { props: {} };
 
   // this is pretty naive, but who cares
-  const subdomain = host.includes('.') ? host.split('.')[0] : undefined;
-
-  // decode to unicode
-  const origin = subdomain ? toUnicode(subdomain) : undefined;
+  const origin = host.includes('.') ? host.split('.')[0] : undefined;
 
   // if we have a valid destination, redirect
   const destination = await getDestinationIfExists(origin);
