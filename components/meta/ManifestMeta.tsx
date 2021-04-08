@@ -7,7 +7,7 @@ export function ManifestMeta() {
       <meta name="viewport" content="initial-scale=1.0, width=device-width, viewport-fit=cover" />
       <meta httpEquiv="x-ua-compatible" content="ie=edge" />
 
-      {/* <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
+      <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
       <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png" />
       <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png" />
       <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png" />
@@ -24,7 +24,7 @@ export function ManifestMeta() {
       <link rel="manifest" href="/manifest.json" />
       <meta name="msapplication-TileColor" content="#ffffff" />
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
-      <meta name="theme-color" content="#ffffff" /> */}
+      <meta name="theme-color" content="#ffffff" />
     </Head>
   );
 }
