@@ -1,7 +1,8 @@
 import { Button } from '@chakra-ui/button';
 import { useClipboard } from '@chakra-ui/hooks';
-import { Box, Center, HStack, Link, Text, VStack } from '@chakra-ui/layout';
+import { Box, Center, Link, Text, VStack } from '@chakra-ui/layout';
 import { motion } from 'framer-motion';
+import { toASCII } from 'punycode/';
 import { useMemo } from 'react';
 
 import { useDrops } from '../lib/useDrops';
@@ -14,17 +15,20 @@ export function SuccessPage({ origin, destination }: { origin: string; destinati
     variants: toEmojiArray(origin),
   });
 
-  const href = `https://${origin}.ý.at`;
-  const { hasCopied, onCopy } = useClipboard(href);
+  const encodedOrigin = useMemo(() => toASCII(origin), [origin]);
+  const encodedHref = `https://${encodedOrigin}.ý.at`;
+  const hostname = `${origin}.ý.at`;
+  const href = `https://${hostname}`;
+  const { hasCopied, onCopy } = useClipboard(encodedHref);
 
   const tweetHref = useMemo(
     () =>
       `https://twitter.com/intent/tweet?${new URLSearchParams({
         text: `check out my ý.at here:\n`,
-        url: href,
+        url: encodedHref,
         hashtags: 'yat',
       })}`,
-    [href],
+    [encodedHref],
   );
 
   return (
@@ -82,11 +86,11 @@ export function SuccessPage({ origin, destination }: { origin: string; destinati
           🐦 Tweet your ý.at
         </Button>
 
-        <Button onClick={onCopy}>{hasCopied ? `Copied!` : `Copy ${href}`}</Button>
+        <Button onClick={onCopy}>{hasCopied ? `Copied!` : `Copy ${hostname}`}</Button>
 
         <Text textAlign="center" fontSize="sm" color="gray.500">
           or just visit{' '}
-          <Link href={href} isExternal>
+          <Link href={encodedHref} isExternal>
             {href}
           </Link>
         </Text>
