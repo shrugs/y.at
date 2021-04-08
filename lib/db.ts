@@ -41,3 +41,7 @@ export async function getDestinationIfExists(origin: string): Promise<string> {
     throw error;
   }
 }
+
+export async function getCount(): Promise<number> {
+  return await client.query(q.Count(q.Documents(q.Collection(COLLECTION))));
+}
